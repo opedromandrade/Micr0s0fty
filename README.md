@@ -27,7 +27,7 @@ A mischievously **privacy‑first** collection of PowerShell scripts that **tame
 
 | ❓ Question | 🗨️ Answer |
 |------------|-----------|
-| *Will this break my system?* | Only if you love being tracked. *Test on a VM first!* |
+| *Will this break my system?* | Only if you love being tracked. **Test on a VM first!!!** |
 | *Can I still use the Microsoft Store?* | Absolutely—just without the creepy background data collection. |
 | *Do I need to be a PowerShell ninja?* | No, just a regular person who likes their data private. |
 
