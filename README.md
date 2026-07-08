@@ -1,4 +1,4 @@
-# 🛠️ My Window$ Post Install Script Collection
+# 🛠️ My Window$ Toolbox
 
 ## 🎉 What is this?  
 A mischievously **privacy‑first** collection of PowerShell scripts that **tame Winget**, **shush AI assistants**, and make Windows act like a secret‑agent‑level fortress. Think of it as giving your PC a *“Do Not Disturb”* badge—only cooler.  
