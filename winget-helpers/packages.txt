@@ -1,6 +1,3 @@
-# Please find package iD's on websites like "https://winget.run" or "https://winstall.app"
-# Replace the package iD's to your specific needs and wishes.
-
 Mozilla.Firefox.ESR
 PeterPawlowski.foobar2000
 Sony.MusicCenter
