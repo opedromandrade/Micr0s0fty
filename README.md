@@ -1,4 +1,4 @@
-# 🛠️ My Winget Collection Scripts  
+# 🛠️ My Window$ Post Install Script Collection
 
 ## 🎉 What is this?  
 A mischievously **privacy‑first** collection of PowerShell scripts that **tame Winget**, **shush AI assistants**, and make Windows act like a secret‑agent‑level fortress. Think of it as giving your PC a *“Do Not Disturb”* badge—only cooler.  
@@ -27,7 +27,7 @@ A mischievously **privacy‑first** collection of PowerShell scripts that **tame
 
 | ❓ Question | 🗨️ Answer |
 |------------|-----------|
-| *Will this break my system?* | Only if you love being tracked. Test on a VM first! |
+| *Will this break my system?* | Only if you love being tracked. *Test on a VM first!* |
 | *Can I still use the Microsoft Store?* | Absolutely—just without the creepy background data collection. |
 | *Do I need to be a PowerShell ninja?* | No, just a regular person who likes their data private. |
 
