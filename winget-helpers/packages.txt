@@ -1,0 +1,16 @@
+Mozilla.Firefox.ESR
+PeterPawlowski.foobar2000
+Sony.MusicCenter
+FlorianHeidenreich.Mp3tag
+AndreWiethoff.ExactAudioCopy
+CodecGuide.K-LiteCodecPack.Standard
+clsid2.mpc-hc
+LIGHTNINGUK.ImgBurn
+IrfanSkiljan.IrfanView
+IrfanSkiljan.IrfanView.PlugIns
+calibre.calibre
+Sigil-Ebook.Sigil
+qBittorrent.qBittorrent
+Notepad++.Notepad++
+7zip.7zip
+SumatraPDF.SumatraPDF
