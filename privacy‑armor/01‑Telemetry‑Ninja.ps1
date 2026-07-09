@@ -1,33 +1,75 @@
+<# SYNOPSIS
+📌 Reduce Windows telemetry to the absolute minimum.
+🔧 Safe for most desktop installations; does not break core OS functionality.
+#>
 
-Write-Output "The script will now install all your apps. Feel free to grab a coffee or keep working on something else!"
+# --------------------------------------------------------------------
+# Log helper – writes to console AND to privacy‑armor.log (same folder)
+function Write-Log {
+    param([string]$Message)
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $entry = "$timestamp  $Message"
+    $logPath = Join-Path $PSScriptRoot "privacy-armor.log"
+    Add-Content -Path $logPath -Value $entry
+    Write-Host $Message
+}
+# --------------------------------------------------------------------
+# Must run as Administrator
+if (-not ([Security.Principal.WindowsPrincipal]::new(
+          [Security.Principal.WindowsIdentity]::GetCurrent()
+      )).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Log "⚠️  Abort – script must be run from an elevated PowerShell."
+    exit 1
+}
+Write-Log "🚀  01‑Telemetry‑Ninja started."
 
-$apps = @(
-    @{name = "Mozilla.Firefox.ESR" },
-    @{name = "qBittorrent.qBittorrent" },
-    @{name = "PeterPawlowski.foobar2000" },
-    @{name = "PeterPawlowski.foobar2000.EncoderPack" },
-	@{name = "FlorianHeidenreich.Mp3tag" },
-	@{name = "Sony.MusicCenter" },
-    @{name = "AndreWiethoff.ExactAudioCopy" },
-    @{name = "LIGHTNINGUK.ImgBurn" },
-    @{name = "CodecGuide.K-LiteCodecPack.Standard" },
-    @{name = "clsid2.mpc-hc" }
-	@{name = "IrfanSkiljan.IrfanView" },
-    @{name = "IrfanSkiljan.IrfanView.PlugIns" },
-	@{name = "calibre.calibre" },
-    @{name = "Sigil-Ebook.Sigil" },
-    @{name = "Notepad++.Notepad++" },
-    @{name = "SumatraPDF.SumatraPDF" },
-    @{name = "7zip.7zip" }
-);
+function Set-Registry {
+    param($Path, $Name, $Value)
+    if (-not (Test-Path $Path)) { New-Item -Path $Path -Force | Out-Null }
+    Set-ItemProperty -Path $Path -Name $Name -Value $Value -Force
+}
 
-Foreach ($app in $apps) {
-    $listApp = winget list --exact -q $app.name
-    if (![String]::Join("", $listApp).Contains($app.name)) {
-        Write-host "Installing" $app.name
-        winget install -e -h --accept-source-agreements --accept-package-agreements --id $app.name 
-    }
-    else {
-        Write-host "Skipping" $app.name "(app already installed)"
+Write-Log "🔧 Applying telemetry‑related registry tweaks…"
+
+# Core telemetry switches
+Set-Registry "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" `
+              "AllowTelemetry" 0
+Set-Registry "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" `
+              "AllowTelemetry" 0
+
+# Additional privacy‑focused keys
+Set-Registry "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
+              "EnableActivityFeed" 0
+Set-Registry "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
+              "ShowTelemetryOptionalFeatures" 0
+Set-Registry "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" `
+              "Enabled" 0
+Set-Registry "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
+              "DisableCEIP" 1
+Set-Registry "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
+              "AllowDeviceHealthTelemetry" 0
+Set-Registry "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
+              "DiagnosticData" 0
+Set-Registry "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
+              "PublishUserActivities" 0
+
+# Stop telemetry‑related services
+$telemetrySvcs = @(
+    "DiagTrack",          # Connected User Experiences & Telemetry
+    "dmwappushservice",   # Push notifications
+    "WpnUserService",     # Windows Push Notifications (often telemetry)
+    "OneSyncSvc",         # Sync service (optional)
+    "SysMain",            # SuperFetch – frequently disabled for privacy
+    "WSearch"             # Search indexing (can leak metadata)
+)
+
+foreach ($svc in $telemetrySvcs) {
+    $service = Get-Service -Name $svc -ErrorAction SilentlyContinue
+    if ($service) {
+        Write-Log "🛑 Stopping & disabling $svc"
+        Stop-Service -Name $svc -Force -ErrorAction SilentlyContinue
+        Set-Service -Name $svc -StartupType Disabled -ErrorAction SilentlyContinue
     }
 }
+
+Write-Log "✅ 01‑Telemetry‑Ninja completed."
