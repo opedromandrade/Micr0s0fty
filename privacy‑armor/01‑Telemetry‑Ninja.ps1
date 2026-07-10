@@ -8,9 +8,10 @@
 function Write-Log {
     param([string]$Message)
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    $entry = "$timestamp  $Message"
-    $logPath = Join-Path $PSScriptRoot "privacy-armor.log"
-    Add-Content -Path $logPath -Value $entry
+    $logDir = Join-Path $PSScriptRoot "logs"
+    if (-not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
+    $logPath = Join-Path $logDir "01‑Telemetry‑Ninja.log"
+    Add-Content -Path $logPath -Value "$timestamp  $Message"
     Write-Host $Message
 }
 # --------------------------------------------------------------------
