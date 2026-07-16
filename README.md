@@ -1,7 +1,8 @@
 # 🛠️ My Window$ Toolbox
 
 ## 🎉 What is this?  
-A mischievously **privacy‑first** collection of PowerShell scripts that **tame Winget**, **shush AI assistants**, and make Windows act like a secret‑agent‑level fortress. Think of it as giving your PC a *“Do Not Disturb”* badge—only cooler.  
+A mischievously **privacy‑first** collection of PowerShell scripts that **tame Winget**, **shush AI assistants**, and make Windows act like a secret‑agent‑level fortress. Think of it as giving your PC a *“Do Not Disturb”* badge—only cooler.
+This was made possible using AI robots. So use this with particularly attention.
 
 ## 📦 What’s Inside?  
 | 📂 Folder | 🛠️ Purpose | 🤖 What It Does |
